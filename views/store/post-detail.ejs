@@ -1,0 +1,64 @@
+<%- include('../partials/head') %>
+</head>
+<body class="bg-gradient-to-br from-red-100 via-white to-red-200 min-h-screen font-sans">
+    <%- include('../partials/nav') %>
+    <main class="container mx-auto bg-white shadow-2xl rounded-3xl p-10 mt-12 max-w-5xl">
+        <h2 class="text-5xl font-black text-center text-red-700 mb-12 tracking-tight drop-shadow-lg">
+            Title:
+            <%= home.title %>
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div class="rounded-2xl overflow-hidden shadow-lg border-4 border-red-200">
+                <img src="<%= home.photo %>" alt="<%= home.title %>" class="w-full h-96 object-cover transition-transform duration-300 hover:scale-105">
+            </div>
+            
+            <div class="space-y-8">
+                <div class="border-b-2 pb-4">
+                    <h3 class="text-2xl font-bold mb-2 text-red-600 flex items-center gap-2">
+                        Author Name
+                    </h3>
+                    <p class="text-red-700 text-2xl font-extrabold"><%= home.   authorName %></p>
+                </div>
+                <div class="border-b-2 border-red-100 pb-2">
+                    <h3 class="text-2xl font-bold mb-2 text-blue-600 flex items-center gap-2">
+                    Subtitle
+                    </h3>
+                    <p class="text-blue-500 text-2xl font-extrabold"><%= home.subtitle %></p>
+                </div>
+                <div class="border-b-2 border-red-100 pb-2">
+                    <h3 class="text-2xl font-bold mb-2 text-green-600 flex items-center gap-2">
+                    Category
+                    </h3>
+                    <p class="text-green-500 text-2xl font-extrabold"><%= home.category %></p>
+                </div>
+                
+                <div class="border-b-2 flex justify-between pb-2">
+                <div>
+                    <h3 class="text-2xl font-bold mb-2 text-yellow-600 flex items-center gap-2">
+                        Created At:
+                    </h3>
+                    <div class="flex items-center">
+                        <span class="text-yellow-500 ml-1 text-lg font-semibold">
+                            <%= new Date(home.createdAt).toLocaleDateString() %>
+                        </span>
+                    </div>
+                </div>
+                <% if(userType === 'reader') { %>
+                <div class="mt-4">
+                <%- include('../partials/favourite') %>
+                </div>
+                <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- House Description Section -->
+        <section class="mt-12 bg-red-50 rounded-2xl p-8 shadow-inner">
+            <h3 class="text-3xl font-bold text-red-700 mb-4 flex items-center gap-2">
+               Description - <br> <br> <%= home.description %>
+            </h3>
+        </section>
+    </main>
+</body>
+</html>
