@@ -1,77 +1,42 @@
-BlogNest 📝
-BlogNest is a full-stack blogging platform built with:
+# BlogNest 📝
 
-Node.js
+[![Deploy on Render](https://img.shields.io/badge/Deploy%20on-Render-3f3f3f?logo=render&style=for-the-badge)](https://blognest-8.onrender.com)
 
-Express.js
+**BlogNest** is a full-stack blogging platform built with:
 
-EJS (Embedded JavaScript Templating)
+- **Node.js**
+- **Express.js**
+- **EJS (Embedded JavaScript Templating)**
+- **MongoDB + Mongoose**
+- **Tailwind CSS**
+- **Multer** (for file uploads)
+- **express-session** + **connect-mongo** (for user session management)
 
-MongoDB + Mongoose
+---
 
-Tailwind CSS
+## 🌐 Live Demo
 
-Multer (for file uploads)
+👉 [https://blognest-8.onrender.com](https://blognest-8.onrender.com)
 
-express-session + connect-mongo (for user session management)
+---
 
-🌐 Live Demo
-👉 https://blognest-8.onrender.com
+## ✨ Features
 
-✨ Features
-User Authentication (Register, Login, Logout)
+- User Authentication (Register, Login, Logout)
+- Add and Manage Blog Posts
+- Upload Images with Posts (Multer)
+- Responsive UI with Tailwind CSS
+- Session-based authentication with MongoDB session store
+- Server-side rendering with EJS templates
+- Image hosting via Express static serving
+- Protected routes for authors
+- Error Handling pages
 
-Add and Manage Blog Posts
+---
 
-Upload Images with Posts (Multer)
+## 🛠️ Installation
 
-Responsive UI with Tailwind CSS
-
-Session-based authentication with MongoDB session store
-
-Server-side rendering with EJS templates
-
-Image hosting via Express static serving
-
-Protected routes for authors
-
-Error Handling pages
-
-🛠️ Installation
-bash
-Copy
-Edit
-git clone <repo-url>
+```bash
+git clone <your-repo-url>
 cd blognest
 npm install
-⚙️ Usage
-Start the server (development):
-bash
-Copy
-Edit
-npm run dev
-Start the server (production):
-bash
-Copy
-Edit
-npm start
-📁 Project Structure
-csharp
-Copy
-Edit
-BlogNest/
-├── models/
-├── routes/
-├── controllers/
-├── views/         # EJS templates
-├── public/        # Static assets (CSS, images)
-├── app.js         # Main server file
-├── package.json
-└── README.md
-🖥️ Deployment
-The app is deployed on Render Free Web Service.
-
-Live URL: https://blognest-8.onrender.com
-
-📜 License
-This project is licensed under the MIT License.
