@@ -26,10 +26,13 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const store = new mongoDBStore({ // MongoDB session store
-  uri: DB_PATH,
-  collection: 'sessions'
-})
+
+const MongoStore = require('connect-mongo');
+const store = MongoStore.create({
+  mongoUrl: DB_PATH,
+  collectionName: 'sessions',
+});
+
 
 const randomString = (length) => {
   const characters = 'abcdefghijklmnopqrstuvwxyz';
