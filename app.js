@@ -9,7 +9,6 @@ const User = require('./models/user')
 // External Module
 const express = require('express');
 const session = require('express-session')
-const mongoDBStore = require('connect-mongodb-session')(session)
 const multer = require('multer');
 const { default: mongoose } = require('mongoose');
 
