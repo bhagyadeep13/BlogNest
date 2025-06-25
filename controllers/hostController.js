@@ -149,11 +149,7 @@ exports.postDeletePost = async (req, res, next) => {
   console.log("Came to delete ", postId);
   Home.findByIdAndDelete(postId)
     .then(() => {
-      res.render("/host/delete-post",{
-                                toastMessage: 
-                                {type: 'info',
-                                text: 'Post Deleted successfully!.'
-                              },
+      res.render("host/delete-post",{
                                 pageTitle: "Delete Post",
                                 currentPage: "DeletePost",
                                 IsLoggedIn : req.session.IsLoggedIn,
