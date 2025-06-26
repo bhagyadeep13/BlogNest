@@ -1,6 +1,7 @@
 const Home = require("../models/post");
 const fs = require('fs');
-const User = require('../models/user')
+const User = require('../models/user');
+const { register } = require("module");
 
 exports.getAddPost = (req, res, next) => {
   res.render("host/details", {
@@ -147,15 +148,32 @@ exports.getDeletePost = async (req, res, next) => {
 exports.postDeletePost = async (req, res, next) => {
   const postId = req.params.postId;
   console.log("Came to delete ", postId);
-  Home.findByIdAndDelete(postId)
-    .then(() => {
-      res.render("host/delete-post",{
+  const home = Home.findByIdAndDelete(postId)
+  if(home)
+  {
+    const userId = req.session.user._id;
+    const user = await User.findById(userId);
+    if (user) {
+      // Remove the home from the user's homes array
+      user.homes = user.homes.filter(homeId => homeId.toString() !== postId);
+      await user.save();
+    }
+    res.render("host/delete-post",{
+                                registeredPosts: user.homes,
                                 pageTitle: "Delete Post",
                                 currentPage: "DeletePost",
                                 IsLoggedIn : req.session.IsLoggedIn,
                                 user: req.session.user});
-    })
-    .catch((error) => {
-      console.log("Error while deleting ", error);
+  }
+  else
+  {
+    console.log("error deleting post");
+    res.render('404', {
+      pageTitle: "Error",
+      currentPage: "Error",
+      IsLoggedIn : req.session.IsLoggedIn,
+      user: req.session.user,
+      message: "Post not found" 
     });
+  }
 };
