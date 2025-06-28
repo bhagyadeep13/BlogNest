@@ -26,6 +26,7 @@ exports.postLogIn = async (req, res, next) => {
   console.log(email, password)
   const User = await user.findOne({ email: email })
   {
+    console.log("User: ", User);
     if (!User) {
       return res.status(401).render("auth/login", {
         pageTitle: "Login Page",
@@ -56,7 +57,7 @@ exports.postLogIn = async (req, res, next) => {
     }
     else
     {
-      console.log("User logged in successfully");
+      console.log("User logged in Successfully");
       req.session.user = User; // Store the user in the session
       req.session.toastMessage = {type: 'success', text: 'User LoggedIn successfully!.'};
       req.session.IsLoggedIn = true;

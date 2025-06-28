@@ -8,6 +8,8 @@ exports.getIndex = async (req, res, next) => {
       const toastMessage = req.session.toastMessage;
       req.session.toastMessage = null;
       await req.session.save();
+      console.log("user: ", req.session.user);
+      console.log("IsLoggedIn: ", req.session.IsLoggedIn);
       res.render("store/index", 
       {
         registeredPosts: post,

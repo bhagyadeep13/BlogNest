@@ -58,7 +58,7 @@ exports.postAddPost = async (req, res, next) => {
       return res.status(400).send("Only image files are allowed.");
       // You can also render an error page or redirect to an error route
     }
-
+    
   const photo_path = req.file.path; // Get the filename from the uploaded file
   const home = new Home({
     title,
@@ -117,7 +117,7 @@ exports.postEditPost = async (req, res, next) => {
     console.log("Post not found for editing.");
   }
     res.redirect("/host/host-home-list",);
-  }
+};
 
 exports.getDeletePost = async (req, res, next) => {
       const userId = req.session.user._id;
@@ -148,11 +148,22 @@ exports.getDeletePost = async (req, res, next) => {
 exports.postDeletePost = async (req, res, next) => {
   const postId = req.params.postId;
   console.log("Came to delete ", postId);
-  const home = Home.findByIdAndDelete(postId)
-  if(home)
+  const home = await Home.findByIdAndDelete(postId)
+  if(!home)
   {
-    const userId = req.session.user._id;
+    console.log("Post not found for deletion.");
+    return res.render('404', {
+      pageTitle: "Error",
+      currentPage: "Error",
+      IsLoggedIn : req.session.IsLoggedIn,
+      user: req.session.user,
+      message: "Post not found"
+    });
+  }
+  console.log("Post deleted successfully");
+  const userId = req.session.user._id;
     const user = await User.findById(userId);
+      console.log("User ID: ", await user,await home);
     if (user) {
       // Remove the home from the user's homes array
       user.homes = user.homes.filter(homeId => homeId.toString() !== postId);
@@ -165,15 +176,3 @@ exports.postDeletePost = async (req, res, next) => {
                                 IsLoggedIn : req.session.IsLoggedIn,
                                 user: req.session.user});
   }
-  else
-  {
-    console.log("error deleting post");
-    res.render('404', {
-      pageTitle: "Error",
-      currentPage: "Error",
-      IsLoggedIn : req.session.IsLoggedIn,
-      user: req.session.user,
-      message: "Post not found" 
-    });
-  }
-};
