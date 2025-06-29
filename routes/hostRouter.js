@@ -11,6 +11,6 @@ hostRouter.get("/host-home-list", hostController.getHostHomes);
 hostRouter.get("/edit-post/:homeId", hostController.getEditHome);
 hostRouter.post("/edit-post",upload.single('photo'), hostController.postEditPost);
 hostRouter.get("/delete-post", hostController.getDeletePost);
-hostRouter.get("/delete-post/:postId", hostController.postDeletePost);
+hostRouter.post("/delete-post", hostController.postDeletePost);
 
 module.exports = hostRouter;

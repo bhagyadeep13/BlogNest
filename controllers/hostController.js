@@ -148,33 +148,43 @@ exports.getDeletePost = async (req, res, next) => {
 }
 
 exports.postDeletePost = async (req, res, next) => {
-  const postId = req.params.postId;
+  const postId = req.body.postId;
   console.log("Came to delete ", postId);
-  const home = await Home.findByIdAndDelete(postId)
-  if(!home)
-  {
+
+  // Find the home first (to get the photo path)
+  const home = await Home.findById(postId);
+  if (!home) {
     console.log("Post not found for deletion.");
-    return res.render('404', {
-      pageTitle: "Error",
-      currentPage: "Error",
-      IsLoggedIn : req.session.IsLoggedIn,
-      user: req.session.user,
-      message: "Post not found"
+    res.status(404).send("Post not found");
+  }
+
+  // Delete the image file associated with this post
+  if (home && home.photo) {
+    fs.unlink(home.photo, (err) => {
+      if (err) {
+        console.error("Error deleting photo file:", err);
+      }
     });
   }
+
+  // Delete the post from the database
+  await Home.findByIdAndDelete(postId);
   console.log("Post deleted successfully");
+
+  // Remove the home from the user's homes array
   const userId = req.session.user._id;
-    const user = await User.findById(userId);
-      console.log("User ID: ", await user,await home);
-    if (user) {
-      // Remove the home from the user's homes array
-      user.homes = user.homes.filter(homeId => homeId.toString() !== postId);
-      await user.save();
-    }
-    res.render("host/delete-post",{
-                                registeredPosts: user.homes,
-                                pageTitle: "Delete Post",
-                                currentPage: "DeletePost",
-                                IsLoggedIn : req.session.IsLoggedIn,
-                                user: req.session.user});
+  const user = await User.findById(userId).populate('homes');
+  if (user) {
+    user.homes = user.homes.filter(homeId => homeId.toString() !== postId);
+    await user.save();
   }
+
+  // Re-render the delete-post page with updated posts
+  res.render("host/delete-post", {
+    registeredPosts: user.homes,
+    pageTitle: "Delete Post",
+    currentPage: "DeletePost",
+    IsLoggedIn: req.session.IsLoggedIn,
+    user: req.session.user
+  });
+};

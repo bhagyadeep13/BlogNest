@@ -24,7 +24,10 @@
                   </div>
                 </div>
                 <div class="flex gap-3 mt-auto">
-                  <a href="/host/delete-post/<%=post._id%>" class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-center font-semibold transition">Delete Post</a>
+                  <form action="/host/delete-post" method="POST">
+                    <input type="hidden" name="postId" value="<%= post._id %>">
+                    <button class="p-5 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-center font-semibold transition">Delete Post</button>
+                  </form>
                 </div>
               </div>
             </div>
