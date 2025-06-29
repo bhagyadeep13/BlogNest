@@ -64,7 +64,7 @@ const multerOptions = {
 };
 */
 //app.use(multer(multerOptions).single('photo')); // single file upload with field name 'photo'
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 /*app.use(express.static(path.join(rootDir, 'public')))
 
 app.use("/public/images",express.static(path.join(rootDir, 'public/images'))) //
