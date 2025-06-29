@@ -87,12 +87,14 @@ exports.postAddPost = async (req, res, next) => {
 exports.postEditPost = async (req, res, next) => {
   const { id,subtitle,title, authorName, category, createdAt, photo, description } =
     req.body;
-    console.log(title, authorName, category, createdAt, photo, description);
-  console.log(req.body,id);
+    console.log(title, authorName, category, createdAt, description);
+  console.log(req.body);
+  const user = req.session.user;
+  console.log("User ID: ", user);
     const post = await Home.findById(id);
   if (post) {
     post.title = title;
-    post.subtitle = title;
+    post.subtitle = subtitle;
     post.authorName = authorName;
     post.category = category;
     post.createdAt = createdAt;

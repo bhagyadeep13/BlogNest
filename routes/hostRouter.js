@@ -9,7 +9,7 @@ hostRouter.get("/add-post", hostController.getAddPost);
 hostRouter.post("/add-post", upload.single('photo'), hostController.postAddPost);
 hostRouter.get("/host-home-list", hostController.getHostHomes);
 hostRouter.get("/edit-post/:homeId", hostController.getEditHome);
-hostRouter.post("/edit-post", hostController.postEditPost);
+hostRouter.post("/edit-post",upload.single('photo'), hostController.postEditPost);
 hostRouter.get("/delete-post", hostController.getDeletePost);
 hostRouter.get("/delete-post/:postId", hostController.postDeletePost);
 

@@ -64,14 +64,14 @@ const multerOptions = {
 };
 */
 //app.use(multer(multerOptions).single('photo')); // single file upload with field name 'photo'
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded());
 /*app.use(express.static(path.join(rootDir, 'public')))
 
 app.use("/public/images",express.static(path.join(rootDir, 'public/images'))) //
-// Agar home add karne ke samay photo upload karte hain toh public/images path  wali images ki request ko serve karne ke liye use karte hain 
+//Agar home add karne ke samay photo upload karte hain toh public/images path  wali images ki request ko serve karne ke liye use karte hain 
 app.use("/host/public/images",express.static(path.join(rootDir, 'public/images')))
-app.use("/homes/public/images",express.static(path.join(rootDir, 'public/images')))*/
-
+app.use("/homes/public/images",express.static(path.join(rootDir, 'public/images')))
+*/
 app.use(session({ // session middleware
   secret : "bhagyadeep",
   resave: false,
