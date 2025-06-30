@@ -63,6 +63,9 @@ exports.getPostList = (req, res, next) => {
 exports.getFavouriteList = async (req, res, next) => 
   {
   const userId = req.session.user._id; // user ID is stored in session
+  const toastMessage = req.session.toastMessage;
+  req.session.toastMessage = null;
+  await req.session.save();
   const user = await User.findById(userId)
   .populate('favourites')
   //console.log("User: ",await user); // Fetch user print only values of user
@@ -70,6 +73,7 @@ exports.getFavouriteList = async (req, res, next) =>
     favouritePosts: user.favourites,
     pageTitle: "Favourite Posts",
     currentPage: "favourites", 
+    toastMessage: toastMessage,
     IsLoggedIn : req.session.IsLoggedIn,
     user: req.session.user
 })
@@ -87,6 +91,8 @@ exports.postAddToFavourite = async (req, res, next) => {
         user.favourites.push(postId);
         console.log("Post added to favourites successfully");
         await user.save();
+        req.session.toastMessage = {type: 'success', text: 'Post added successfully!.'};
+        await req.session.save();
       }
       else
       {
@@ -112,6 +118,8 @@ exports.postRemoveFromFavourite = async (req, res, next) => {
     console.log("Post removed from favourites successfully");
     await user.save();
   }
+  req.session.toastMessage = {type: 'success', text: 'Post removed successfully !.'};
+  await req.session.save();
   res.redirect("/favourites");
 }
 

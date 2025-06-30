@@ -2,11 +2,12 @@
   </head>
   <body class="bg-gradient-to-br from-pink-200 via-yellow-100 to-blue-200 min-h-screen font-sans">
     <%- include('../partials/nav') %>
+    <%- include('../partials/toast') %>
       <div class="mt-10 bg-gradient-to-br from-pink-200 via-yellow-100 to-blue-200 min-h-screen font-sans w-full h-full">
         <h2 class="text-4xl font-extrabold text-center text-red-600 mb-10 tracking-tight">
           Hey Host! Here you can delete your Uploaded Posts:
         </h2>
-        <div class="flex flex-wrap justify-center gap-6">
+        <div class="flex flex-wrap justify-center gap-10">
           <% registeredPosts.forEach(post => { %>
             <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 w-full max-w-xs flex flex-col">
               <img src="<%= post.photo %>" alt="<%= post.title %>" class="w-full h-48 object-cover rounded-t-xl">

@@ -35,12 +35,14 @@ exports.getEditHome = (req, res, next) => {
 
 exports.getHostHomes = async (req, res, next) => {
       const userId = req.session.user._id;
+      const toastMessage = req.session.toastMessage;
+      req.session.toastMessage = null; // Clear the toast message after rendering
       const user = await User.findById(userId)
       .populate('homes')
       res.render("host/author-post-list", {
       registeredPosts: user.homes,
       pageTitle: "Host Homes List",
-      toastMessage: req.session.toastMessage,
+      toastMessage: toastMessage,
       currentPage: "host-homes", 
       IsLoggedIn : req.session.IsLoggedIn,
       user: req.session.user
@@ -81,6 +83,9 @@ exports.postAddPost = async (req, res, next) => {
         user.homes.push(homeId);
         await user.save();
     }
+    const toastMessage = {type: 'success', text: 'Post added successfully!.'};
+    req.session.toastMessage = toastMessage; // Store the toast message in the session
+    await req.session.save(); // Save the session to persist the message
   res.redirect("/");
 };
 
@@ -123,6 +128,9 @@ exports.postEditPost = async (req, res, next) => {
 
 exports.getDeletePost = async (req, res, next) => {
       const userId = req.session.user._id;
+      const toastMessage = req.session.toastMessage;
+  req.session.toastMessage = null; // Clear the toast message after rendering
+  // Re-render the delete-post page with updated posts
       const user = await User.findById(userId)
     .populate('homes')
     if(user)
@@ -131,6 +139,7 @@ exports.getDeletePost = async (req, res, next) => {
         registeredPosts: user.homes,
         pageTitle: "Delete Post",
         currentPage: "DeletePost",
+        toastMessage: toastMessage,
         IsLoggedIn : req.session.IsLoggedIn,
         user: req.session.user
       });
@@ -177,13 +186,17 @@ exports.postDeletePost = async (req, res, next) => {
   if (user) {
     user.homes = user.homes.filter(homeId => homeId.toString() !== postId);
     await user.save();
+    req.session.toastMessage = {type: 'error', text: 'Post deleted successfully!.'};
+    await req.session.save();
   }
-
+  const toastMessage = req.session.toastMessage;
+  req.session.toastMessage = null; // Clear the toast message after rendering
   // Re-render the delete-post page with updated posts
   res.render("host/delete-post", {
     registeredPosts: user.homes,
     pageTitle: "Delete Post",
     currentPage: "DeletePost",
+    toastMessage: toastMessage,
     IsLoggedIn: req.session.IsLoggedIn,
     user: req.session.user
   });

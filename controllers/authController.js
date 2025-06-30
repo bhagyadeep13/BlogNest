@@ -5,12 +5,16 @@ const bcrypt = require("bcryptjs");
 const user = require("../models/user");
 const { use } = require("react");
 
-exports.getLogIn = (req, res, next) => {
+exports.getLogIn = async (req, res, next) => {
+  const toastMessage = req.session.toastMessage;
+  console.log("Toast Message: ", toastMessage);
+  req.session.toastMessage = null; // Clear the toast message after displaying it
+  await req.session.save();
   res.render("auth/login", {
     pageTitle: "Login Page",
     currentPage: "Login",
     IsLoggedIn: false,
-    toastMessage: req.session.toastMessage,
+    toastMessage: toastMessage,
     error: [],
     oldInput: {
       email: '',
@@ -62,7 +66,7 @@ exports.postLogIn = async (req, res, next) => {
       req.session.toastMessage = {type: 'success', text: 'User LoggedIn successfully!.'};
       req.session.IsLoggedIn = true;
       await req.session.save();
-      res.redirect("/"); // Redirect to the home page after successful login
+      res.redirect("/about"); // Redirect to the home page after successful login
     }
   }
 }
@@ -71,13 +75,26 @@ exports.postLogIn = async (req, res, next) => {
   //req.session.IsLoggedIn = true;          // me store ho jayegi 
   // get method with index page) ki request gayi localhost ko with cookie == "IsLoggedIn",true on browser
 
-exports.postLogOut = (req, res, next) => {
+exports.postLogOut = async (req, res, next) => {
   //res.cookie("IsLoggedIn",false);
-  req.session.destroy(() => {
-    res.redirect('/login')
-  });
-};
-
+  const toastMessage = req.session.toastMessage;
+  req.session.toastMessage = null; // Clear the toast message after displaying it
+    await req.session.destroy();
+    res.render('auth/login',
+      {
+        pageTitle: "Login Page",
+        currentPage: "Login",
+        IsLoggedIn: false,
+        toastMessage: toastMessage,
+        error: [],
+        oldInput: {
+          email: '',
+          password: ''
+        },
+        user: {}
+      }
+    ); // Redirect to the login page after logout
+  }
 
 exports.getSignUp = (req, res, next) => {
   res.render("auth/signup", {
@@ -189,8 +206,9 @@ exports.postSignUp = [
           password: hashedPassword,
           userType: userType
         });
-        await newUser.save();
-        console.log("User registered successfully");
+        await newUser.save(); // Store the user in the session
+        req.session.toastMessage = {type: 'success', text: 'User registered successfully!'};
+        await req.session.save();
         res.redirect("/login"); // Redirect to the home page after successful registration
   }
 ];
