@@ -36,6 +36,7 @@ exports.postLogIn = async (req, res, next) => {
         pageTitle: "Login Page",
         currentPage: "Login",
         IsLoggedIn: false,
+        toastMessage: null,
         error: ["Invalid email or password"],
         oldInput: {
           email: email,
@@ -51,6 +52,7 @@ exports.postLogIn = async (req, res, next) => {
         pageTitle: "Login Page",
         currentPage: "Login",
         IsLoggedIn: false,
+        toastMessage: null,
         error: ["Invalid password"],
         oldInput: {
           email: email,
