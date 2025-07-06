@@ -8,8 +8,6 @@ exports.getIndex = async (req, res, next) => {
       const toastMessage = req.session.toastMessage;
       req.session.toastMessage = null;
       await req.session.save();
-      console.log("user: ", req.session.user);
-      console.log("IsLoggedIn: ", req.session.IsLoggedIn);
       res.render("store/index", 
       {
         registeredPosts: post,
@@ -22,25 +20,33 @@ exports.getIndex = async (req, res, next) => {
     }
   };
 
-exports.getPostDetails = (req, res, next) => 
-  {
-  const homeId = req.params.homeId;
-  Home.findById(homeId).then((home) => {
-    if (!home) {  
+  exports.getPostDetails = async (req, res, next) => {
+
+  const postId = req.query.postId;  // Assuming postId is passed as a query parameter
+  const user = req.session.user;
+  if(!user) {
+    const toastMessage = {type: 'error', text: 'Please log in first to view post details.'};
+    req.session.toastMessage = toastMessage;
+    await req.session.save();
+    res.redirect("/login");
+    return;
+  }
+  const userType = await user.userType;
+  const post = await Home.findById(postId)
+    if (!post) {
       console.log("Home not found");
       res.redirect("/homes");
-    } 
-    else {
+    } else {
       res.render("store/post-detail", {
-        home: home, 
+        home: post,
+        userType: userType,
         pageTitle: "Post Detail",
-        currentPage: "post-detail",
+        currentPage: "post-detail", 
         IsLoggedIn : req.session.IsLoggedIn,
         user: req.session.user
       });
     }
-  });
-};
+  }
 
 exports.getPostList = (req, res, next) => {
 
@@ -123,28 +129,3 @@ exports.postRemoveFromFavourite = async (req, res, next) => {
   res.redirect("/favourites");
 }
 
-exports.getPostDetails = async (req, res, next) => {
-
-  const postId = req.query.postId;  // Assuming postId is passed as a query parameter
-  console.log("Post ID:", postId);
-  const user = req.session.user;
-  if(!user) {
-    res.redirect("/signUp");
-    return;
-  }
-  const userType = await user.userType;
-  const post = await Home.findById(postId)
-    if (!post) {
-      console.log("Home not found");
-      res.redirect("/homes");
-    } else {
-      res.render("store/post-detail", {
-        home: post,
-        userType: userType,
-        pageTitle: "Post Detail",
-        currentPage: "post-detail", 
-        IsLoggedIn : req.session.IsLoggedIn,
-        user: req.session.user
-      });
-    }
-  }

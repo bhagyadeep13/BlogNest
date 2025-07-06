@@ -7,7 +7,6 @@ const { use } = require("react");
 
 exports.getLogIn = async (req, res, next) => {
   const toastMessage = req.session.toastMessage;
-  console.log("Toast Message: ", toastMessage);
   req.session.toastMessage = null; // Clear the toast message after displaying it
   await req.session.save();
   res.render("auth/login", {
@@ -98,12 +97,16 @@ exports.postLogOut = async (req, res, next) => {
     ); // Redirect to the login page after logout
   }
 
-exports.getSignUp = (req, res, next) => {
+exports.getSignUp = async (req, res, next) => {
+  const toastMessage = req.session.toastMessage;
+  req.session.toastMessage = null; // Clear the toast message after displaying it 
+  await req.session.save();
   res.render("auth/signup", {
     pageTitle: "Sign Page",
     currentPage: "signup",
     IsLoggedIn: false,
     error: [],
+    toastMessage: toastMessage,
     oldInput: {
       firstName: '',
       lastName: '',
