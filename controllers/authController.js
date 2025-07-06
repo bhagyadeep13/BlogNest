@@ -41,6 +41,7 @@ exports.postLogIn = async (req, res, next) => {
           email: email,
           password: password
         },
+        toastMessage: null,
         user: {}
       });
     }
@@ -57,6 +58,7 @@ exports.postLogIn = async (req, res, next) => {
           email: email,
           password: password
         },
+        toastMessage: null,
         user: {}
       });
     }
@@ -92,6 +94,7 @@ exports.postLogOut = async (req, res, next) => {
           email: '',
           password: ''
         },
+        toastMessage: null,
         user: {}
       }
     ); // Redirect to the login page after logout
@@ -184,6 +187,7 @@ exports.postSignUp = [
           password: password,
           userType: userType
         },
+        toastMessage: null,
         user: {}
       });
     }
@@ -195,6 +199,7 @@ exports.postSignUp = [
                 currentPage: "signup", 
                 IsLoggedIn: false,
                 error: ["User already exists with this email address"],
+                toastMessage: null,
                 oldInput: {
                   firstName: firstName,
                   lastName: lastName,
